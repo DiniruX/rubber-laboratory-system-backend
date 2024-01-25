@@ -30,10 +30,31 @@ const orderInfo = new mongoose.Schema(
       required: true,
     },
 
-    requiredTests: {
-      type: [String],
-      required: true,
-    },
+    requiredTests: [
+      {
+        testName: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: String,
+          required: true,
+        },
+        outputs: [
+          {
+            outputName: {
+              type: String,
+              required: true,
+            },
+            result: {
+              type: String,
+              required: true,
+            },
+            _id: false,
+          },
+        ],
+      },
+    ],
 
     totalAmount: {
       type: String,

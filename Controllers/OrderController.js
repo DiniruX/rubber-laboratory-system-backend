@@ -36,15 +36,6 @@ const addOrder = async (req, res) => {
         .send("All input is required and 'required tests' should be an array");
     }
 
-    // check if user already exist
-    // Validate if user exist in our database
-    // const oldTest = await Test.findOne({ testName });
-
-    // if (oldTest) {
-    //   res.status(409).send("Test Already Exist. Please choose another name");
-    //   return -1;
-    // }
-
     // Create user in our database
     const order = new Order({
       customerId,
@@ -129,10 +120,27 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const updateOrder = async (req, res) => {
+  const { id } = req.params;
+  const { customerId, customerName, companyPhoneNumber, contactPersonPhoneNumber, companyEmail, contactPersonEmail, requiredTests, totalAmount, status } = req.body;
+
+  try {
+    const updatedOrder = {
+      customerId, customerName, companyPhoneNumber, contactPersonPhoneNumber, companyEmail, contactPersonEmail, requiredTests, totalAmount, status,
+      _id: id,
+    };
+    await Order.findByIdAndUpdate(id, updatedOrder, { new: true });
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+};
+
 module.exports = {
   addOrder,
   getOrdersByCustomerId,
   getOrders,
   getOrderById,
   updateOrderStatus,
+  updateOrder
 };
